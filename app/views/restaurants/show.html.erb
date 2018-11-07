@@ -1,0 +1,51 @@
+ <div class="container">
+  <h1><%= @restaurant.name %></h1>
+  <h2><%= @restaurant.address %></h2>
+  <% split = @restaurant.category.split("") %>
+  <% first = split.first.upcase %>
+  <% split[0] = first %>
+  <h3><%= split.join %></h3>
+  <p>No. <%= @restaurant.phone_number %></p>
+  <h2>Reviews</h2>
+  <div class="reviews_wrapper">
+    <% @restaurant.reviews.each do |review| %>
+      <div class="card">
+        <p><%= review.content %></p>
+        <% review.rating.times do  %>
+          <i class="fas fa-star yellow"></i>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <h3>Leave A Review</h3>
+  <div class="form_wrapper">
+    <%= simple_form_for [@restaurant, @review] do |f| %>
+      <% if @restaurant.errors.any? %>
+        <div class="errors-container">
+          <ul>
+            <% @restaurant.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <div class="form-group">
+        <%= f.label :content, "Write your review" %>
+        <%= f.text_field :content, :class =>"form-control" %>
+      </div>
+      <div class="rating-div">
+        <div class="form-group rating">
+          <%= f.input :rating, :collection => [0, 1, 2 , 3, 4, 5] %>
+        </div>
+      </div>
+      <%= f.submit class:"btn btn-primary" %>
+    <% end %>
+  </div>
+  <br>
+
+  <%= link_to "Go back to restaurants", restaurants_path,class: "btn btn-primary" %>
+
+
+ </div>
+
